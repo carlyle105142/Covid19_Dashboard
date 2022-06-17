@@ -4,9 +4,6 @@ import os.path
 import streamlit as st
 
 
-st.cache()
-
-
 class CovidData:
     def __init__(self, desired_day=datetime.today(), get_cumulative_data=False):
         self.start_date = datetime(year=2020, month=4, day=12)
@@ -14,6 +11,7 @@ class CovidData:
         if self.input_date < self.start_date:
             raise ValueError('Please choose a date after 2020/04/12!')
         self.date_str = self.input_date.strftime('%m-%d-%Y')
+
         self.daily_df = self.get_daily_data(self.input_date - timedelta(days=2))
 
         if get_cumulative_data is True:
@@ -32,9 +30,9 @@ class CovidData:
         return url + desired_day.strftime('%m-%d-%Y') + '.csv'
 
     def get_daily_data(self, desired_day):
-
         url = self.make_url(desired_day)
         daily_df0 = pd.read_csv(url)  # get the daily data .csv file from source url
+
         col_name = ['Province_State', 'Confirmed', 'Deaths', 'Recovered', 'Active',
                     'Incident_Rate', 'Testing_Rate', 'Hospitalization_Rate', 'Lat', 'Long_']
 
@@ -43,13 +41,10 @@ class CovidData:
         daily_df.set_index('Province_State', inplace=True)
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
-        # daily_df.drop(columns='Lat', inplace=True)
         daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(int)
         daily_df['Mortality_Rate'] = daily_df['Deaths'] / daily_df['Confirmed']
 
         return daily_df
-
-        # define a function to loop over given date range
 
     def get_cumulative_data(self):
 
@@ -77,7 +72,5 @@ class CovidData:
             self.is_cumulative_obtained = True
             return final_df
 
-
 # a = CovidData()
 # print(a.daily_df)
-
