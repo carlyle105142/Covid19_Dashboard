@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os.path
 import streamlit as st
-import urllib.error
+
 
 st.cache()
 
@@ -14,11 +14,7 @@ class CovidData:
         if self.input_date < self.start_date:
             raise ValueError('Please choose a date after 2020/04/12!')
         self.date_str = self.input_date.strftime('%m-%d-%Y')
-        try:
-            self.daily_df = self.get_daily_data(desired_day - timedelta(days=1))
-        except urllib.error.HTTPError:
-            print("Sorry! Today's data is not yet available. Data from yesterday is given instead.")
-            self.daily_df = self.get_daily_data(desired_day - timedelta(days=1))
+        self.daily_df = self.get_daily_data(desired_day - timedelta(days=1))
 
         if get_cumulative_data is True:
             self.is_cumulative_obtained = False
