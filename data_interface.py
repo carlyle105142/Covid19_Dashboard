@@ -44,7 +44,7 @@ class CovidData:
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
         # daily_df.drop(columns='Lat', inplace=True)
-        daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(float)
+        daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(int)
         daily_df['Mortality_Rate'] = daily_df['Deaths'] / daily_df['Confirmed']
 
         return daily_df
