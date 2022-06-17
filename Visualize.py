@@ -9,7 +9,7 @@ cov_data = CovidData()
 df2 = cov_data.get_cumulative_data()
 
 # date = st.date_input("Pick a date", value=datetime.today())
-fig1 = px.line(df2[df2.Province_State == 'California'], x='date', y='Confirmed')
+fig1 = px.line(df2[df2.Province_State == 'California'], y='Confirmed')
 st.plotly_chart(fig1)
 # st.line_chart(df2[df2.Province_State == 'California']['Confirmed'].diff())
 # st.line_chart(df2[df2.Province_State == 'California']['Deaths'].diff())
