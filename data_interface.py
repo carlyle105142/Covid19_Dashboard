@@ -15,9 +15,9 @@ class CovidData:
             raise ValueError('Please choose a date after 2020/04/12!')
         self.date_str = self.input_date.strftime('%m-%d-%Y')
         try:
-            self.daily_df = self.get_daily_data(desired_day)
+            self.daily_df = self.get_daily_data(desired_day - timedelta(days=1))
         except urllib.error.HTTPError:
-            print("Sorry! Today's data is not yet available. Data from yesterday is given instead.")
+            # print("Sorry! Today's data is not yet available. Data from yesterday is given instead.")
             self.daily_df = self.get_daily_data(desired_day - timedelta(days=1))
 
         if get_cumulative_data is True:
