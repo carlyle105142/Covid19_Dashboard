@@ -11,6 +11,8 @@ class CovidData:
         if self.input_date < self.start_date:
             raise ValueError('Please choose a date after 2020/04/12!')
         self.date_str = self.input_date.strftime('%m-%d-%Y')
+        self.col_name = ['Province_State', 'Confirmed', 'Deaths',
+                         'Incident_Rate', 'Lat', 'Long_']
 
         self.daily_df = self.get_daily_data(self.input_date - timedelta(days=2))
 
@@ -33,10 +35,7 @@ class CovidData:
         url = self.make_url(desired_day)
         daily_df0 = pd.read_csv(url)  # get the daily data .csv file from source url
 
-        col_name = ['Province_State', 'Confirmed', 'Deaths', 'Recovered', 'Active',
-                    'Incident_Rate', 'Testing_Rate', 'Hospitalization_Rate', 'Lat', 'Long_']
-
-        daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][col_name]
+        daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][self.col_name]
         daily_df['date'] = desired_day.strftime('%m-%d-%Y')
         daily_df.set_index('Province_State', inplace=True)
 
@@ -55,9 +54,10 @@ class CovidData:
         if self.is_cumulative_obtained is True:
             print('Cumulative data already obtained!')
         else:
+            col_name = self.col_name
+            col_name.append('Mortality_Rate')
             final_df = pd.DataFrame(
-                columns=['Province_State', 'Confirmed', 'Deaths', 'Recovered', 'Active',
-                         'Incident_Rate', 'Testing_Rate', 'Hospitalization_Rate', 'Mortality_Rate', 'Lat', 'Long_'])
+                columns=col_name)
             start = self.start_date
             end = self.input_date
 
