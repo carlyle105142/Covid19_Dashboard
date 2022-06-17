@@ -40,7 +40,7 @@ class CovidData:
 
         daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][col_name]
         daily_df['date'] = desired_day.strftime('%m-%d-%Y')
-        daily_df.set_index('date', inplace=True)
+        daily_df.set_index('Province_State', inplace=True)
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
         # daily_df.drop(columns='Lat', inplace=True)
