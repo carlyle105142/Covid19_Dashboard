@@ -5,7 +5,7 @@ import streamlit as st
 
 
 class CovidData:
-    def __init__(self, desired_day=datetime.today(), get_cumulative_data=False):
+    def __init__(self, desired_day=datetime.today()):
         self.start_date = datetime(year=2020, month=4, day=12)
         self.input_date = desired_day
         if self.input_date < self.start_date:
@@ -13,15 +13,6 @@ class CovidData:
         self.date_str = self.input_date.strftime('%m-%d-%Y')
         self.col_name = ['Province_State', 'Confirmed', 'Deaths',
                          'Incident_Rate', 'Lat', 'Long_']
-
-        if get_cumulative_data is True:
-            self.is_cumulative_obtained = False
-            self.local_file_exists = os.path.exists('up_to_{0}.csv'.format(self.date_str))
-            if self.local_file_exists is False:
-                self.cumulative_df = self.get_cumulative_data()
-                self.cumulative_df.to_csv('up_to_{0}.csv'.format(self.date_str), index=False)
-            else:
-                self.cumulative_df = pd.read_csv('up_to_{0}.csv'.format(self.date_str))
 
     @staticmethod
     def make_url(desired_day):
@@ -35,7 +26,7 @@ class CovidData:
 
         daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][self.col_name]
         daily_df['date'] = desired_day.strftime('%m-%d-%Y')
-        daily_df.set_index('Province_State', inplace=True)
+        daily_df.set_index(['Province_State','date'], inplace=True)
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
         daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(int)
@@ -43,32 +34,24 @@ class CovidData:
 
         return daily_df
 
-    def get_cumulative_data(self):
+    def get_cumulative_data(self, lag=30):
 
         def date_range(start_date, end_date):
             for n in range(int((end_date - start_date).days)):
                 yield start_date + timedelta(n)
 
-        if self.is_cumulative_obtained is True:
-            print('Cumulative data already obtained!')
-        else:
-            col_name = self.col_name
-            col_name.append('Mortality_Rate')
-            final_df = pd.DataFrame(
-                columns=col_name)
-            start = self.start_date
-            end = self.input_date
+        col_name = self.col_name
+        col_name.append('Mortality_Rate')
 
-            if start == end:
-                return self.get_daily_data(start)
-            else:
-                for date in date_range(start, end):
-                    sub_df = self.get_daily_data(date)
-                    final_df = pd.concat([final_df, sub_df])
+        final_df = pd.DataFrame(columns=col_name)
+        start = self.input_date - timedelta(days=lag)
+        end = self.input_date
 
-            # update df and status
-            self.is_cumulative_obtained = True
-            return final_df
+        for date in date_range(start, end):
+            sub_df = self.get_daily_data(date)
+            final_df = pd.concat([final_df, sub_df])
+
+        return final_df
 
 # a = CovidData()
 # print(a.daily_df)
