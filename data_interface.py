@@ -14,7 +14,7 @@ class CovidData:
         if self.input_date < self.start_date:
             raise ValueError('Please choose a date after 2020/04/12!')
         self.date_str = self.input_date.strftime('%m-%d-%Y')
-        self.daily_df = self.get_daily_data(self.input_date - timedelta(days=10))
+        self.daily_df = self.get_daily_data(self.input_date - timedelta(days=2))
 
         if get_cumulative_data is True:
             self.is_cumulative_obtained = False
