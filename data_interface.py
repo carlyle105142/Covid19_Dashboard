@@ -26,7 +26,7 @@ class CovidData:
 
         daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][self.col_name]
         daily_df['date'] = desired_day.strftime('%m-%d-%Y')
-        daily_df.set_index(['Province_State','date'], inplace=True)
+        daily_df.set_index('Province_State', inplace=True)
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
         daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(int)
@@ -40,12 +40,11 @@ class CovidData:
             for n in range(int((end_date - start_date).days)):
                 yield start_date + timedelta(n)
 
-        col_name = self.col_name.copy()
-        col_name.append('Mortality_Rate')
-
-        final_df = pd.DataFrame(columns=col_name)
         start = self.input_date - timedelta(days=lag)
         end = self.input_date
+
+        col_name = self.get_daily_data(start).columns
+        final_df = pd.DataFrame(columns=col_name)
 
         for date in date_range(start, end):
             sub_df = self.get_daily_data(date)
