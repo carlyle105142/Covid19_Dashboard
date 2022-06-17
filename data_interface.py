@@ -13,10 +13,6 @@ class CovidData:
         self.date_str = self.input_date.strftime('%m-%d-%Y')
         self.col_name = ['Province_State', 'Confirmed', 'Deaths',
                          'Incident_Rate', 'Lat', 'Long_']
-        try:
-            self.daily_df = self.get_daily_data(self.input_date)
-        except:
-            self.daily_df = self.get_daily_data(self.input_date-timedelta(days=10))
 
         if get_cumulative_data is True:
             self.is_cumulative_obtained = False
