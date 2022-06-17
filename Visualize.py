@@ -8,7 +8,7 @@ cov_data = CovidData()
 df2 = cov_data.get_cumulative_data()
 
 # date = st.date_input("Pick a date", value=datetime.today())
-st.area_chart(df2[df2.Province_State == 'California']['Confirmed'])
+st.bar_chart(df2[df2.Province_State == 'California']['Confirmed'])
 
 # states = df2.index.unique()
 
