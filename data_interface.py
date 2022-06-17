@@ -40,7 +40,7 @@ class CovidData:
             for n in range(int((end_date - start_date).days)):
                 yield start_date + timedelta(n)
 
-        col_name = self.col_name
+        col_name = self.col_name.copy()
         col_name.append('Mortality_Rate')
 
         final_df = pd.DataFrame(columns=col_name)
