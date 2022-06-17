@@ -23,8 +23,8 @@ class CovidData:
         daily_df0 = pd.read_csv(url)  # get the daily data .csv file from source url
 
         daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][self.col_name]
-        daily_df['date'] = desired_day.strftime('%m-%d-%Y')
-        daily_df.set_index('Province_State', inplace=True)
+        daily_df['Date'] = desired_day.strftime('%m-%d-%Y')
+        daily_df.set_index('Date', inplace=True)
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
         daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(int)
