@@ -25,10 +25,10 @@ state = "California"
 state_df = output_df[output_df.Province_State == state]
 prev_state_df = prev_df[prev_df.Province_State == state]
 
-diff = str(100*(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])/prev_state_df['Confirmed'][0])+"%"
-death_diff = str(100*(state_df['Deaths'][0] - prev_state_df['Deaths'][0])/prev_state_df['Deaths'][0])+"%"
+diff = str(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])+"%"
+death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])+"%"
 mort_rate_diff = str(
-    round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0])/prev_state_df['Mortality_Rate'][0], 1)
+    round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0]), 1)
 )+"%"
 
 # st.dataframe(output_df)
