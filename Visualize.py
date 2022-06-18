@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 
 
 cov_data = CovidData()
-df1 = cov_data.get_daily_data()
+df1 = cov_data.get_daily_data(datetime.today()-timedelta(days=1))
 
 prev_cov_data = CovidData(cov_data.input_date - timedelta(days=7))
-df1_prev = prev_cov_data.get_daily_data()
+df1_prev = prev_cov_data.get_daily_data(cov_data.input_date - timedelta(days=7))
 
 
 # df2 = cov_data.get_cumulative_data()
