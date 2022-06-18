@@ -27,8 +27,10 @@ prev_state_df = prev_df[prev_df.Province_State == state]
 
 diff = str(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])
 death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
+
+all_states_avg_mort = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
-    round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0]), 3)
+    round(100*(state_df['Mortality_Rate'][0] - all_states_avg_mort), 3)
 )+"%"
 incident_rate_diff = str(
     int(state_df['Incident_Rate'][0] - prev_state_df['Incident_Rate'][0])
