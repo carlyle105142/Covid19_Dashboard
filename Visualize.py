@@ -1,16 +1,16 @@
 from data_interface import CovidData
 import streamlit as st
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import plotly.express as px
 import matplotlib.pyplot as plt
 
+d = st.date_input("When's your birthday", date.today()-timedelta(days=3))
 
-cov_data = CovidData()
+cov_data = CovidData(desired_day=datetime(year=d.year, month=d.month, day=d.day))
 df1 = cov_data.get_daily_data()
 
 prev_cov_data = CovidData(cov_data.input_date - timedelta(days=7))
-df1_prev = prev_cov_data.get_daily_data(cov_data.input_date - timedelta(days=7))
-
+df1_prev = prev_cov_data.get_daily_data()
 
 # df2 = cov_data.get_cumulative_data()
 
