@@ -20,4 +20,4 @@ df1_prev = prev_cov_data.get_daily_data()
 state = "California"
 diff = int(df1[df1.Province_State == state]['Confirmed']) - int(df1_prev[df1_prev.Province_State == state]['Confirmed'])
 
-st.metric(label='Confirmed', value=df1[df1.Province_State == state]['Confirmed'], delta=int(diff), delta_color='inverse')
+st.metric(label='Confirmed', value=int(df1[df1.Province_State == state]['Confirmed']), delta=int(diff), delta_color='inverse')
