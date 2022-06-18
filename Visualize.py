@@ -24,15 +24,18 @@ prev_df = prev_data.get_daily_data()
 state = "California"
 state_df = output_df[output_df.Province_State == state]
 prev_state_df = prev_df[prev_df.Province_State == state]
-diff = int(state_df['Confirmed']) - int(prev_state_df['Confirmed'])
-death_diff = int(state_df['Deaths']) - int(prev_state_df['Deaths'])
-mort_rate_diff = round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0]), 2)
+
+diff = str(100*(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])/prev_state_df['Confirmed'][0])+"%"
+death_diff = str(100*(state_df['Deaths'][0] - prev_state_df['Deaths'][0])/prev_state_df['Deaths'][0])+"%"
+mort_rate_diff = str(
+    round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0])/prev_state_df['Mortality_Rate'][0], 1)
+)+"%"
 
 # st.dataframe(output_df)
 # st.dataframe(prev_df)
 col1, col2, col3 = st.columns(3)
-col1.metric(label='Confirmed', value=int(state_df['Confirmed']), delta=int(diff), delta_color='inverse')
-col2.metric(label='Deaths', value=int(state_df['Deaths']), delta=int(death_diff), delta_color='inverse')
+col1.metric(label='Confirmed', value=int(state_df['Confirmed']), delta=diff, delta_color='inverse')
+col2.metric(label='Deaths', value=int(state_df['Deaths']), delta=death_diff, delta_color='inverse')
 col3.metric(label='Mortality Rate', value=str(round(10*output_df['Mortality_Rate'][0], 2))+"%",
-            delta=str(mort_rate_diff)+"%",
+            delta=mort_rate_diff,
             delta_color='inverse')
