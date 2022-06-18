@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 
 class CovidData:
-    def __init__(self, desired_day=datetime.today()):
+    def __init__(self, desired_day=datetime.today()-timedelta(days=1)):
         self.start_date = datetime(year=2020, month=4, day=12)
         self.input_date = desired_day
         if self.input_date < self.start_date:
