@@ -21,9 +21,15 @@ prev_df = prev_data.get_daily_data()
 
 # fig1 = px.line(df2[df2.Province_State == 'California'], y='Confirmed')
 # st.plotly_chart(fig1)
-state = "California"
+# state = "California"
+state = st.selectbox(
+     'Please choose a state:',
+     output_df.Province_State.unique())
+
 state_df = output_df[output_df.Province_State == state]
 prev_state_df = prev_df[prev_df.Province_State == state]
+state_monthly_df = output_data.get_period_data(lag=30)
+
 
 diff = str(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])
 death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
