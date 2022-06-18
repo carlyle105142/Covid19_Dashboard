@@ -4,21 +4,26 @@ from datetime import datetime, timedelta, date
 import plotly.express as px
 import matplotlib.pyplot as plt
 
-d = st.date_input("Please choose a date", date.today()-timedelta(days=2))
+d_input = st.date_input("Please choose a date", date.today() - timedelta(days=2))
+dt_input = datetime(year=d_input.year, month=d_input.month, day=d_input.day)
 
-cov_data = CovidData(desired_day=datetime(year=d.year, month=d.month, day=d.day))
-df1 = cov_data.get_daily_data()
+## Output data according to user input
+output_data = CovidData(desired_day=dt_input)
+output_df = output_data.get_daily_data()
 
-prev_cov_data = CovidData(cov_data.input_date - timedelta(days=7))
-df1_prev = prev_cov_data.get_daily_data()
+## 7 days prior to input date
+prev_data = CovidData(output_data.input_date - timedelta(days=7))
+prev_df = prev_data.get_daily_data()
 
-# df2 = cov_data.get_cumulative_data()
+## 1-month data
+# monthly_df = output_data.get_period_data(lag=30)
 
 
 # fig1 = px.line(df2[df2.Province_State == 'California'], y='Confirmed')
 # st.plotly_chart(fig1)
 state = "California"
-diff = int(df1[df1.Province_State == state]['Confirmed']) - int(df1_prev[df1_prev.Province_State == state]['Confirmed'])
-st.dataframe(df1)
-st.dataframe(df1_prev)
-# st.metric(label='Confirmed', value=int(df1[df1.Province_State == state]['Confirmed']), delta=int(diff), delta_color='inverse')
+diff = int(output_df[output_df.Province_State == state]['Confirmed']) - int(
+    prev_df[prev_df.Province_State == state]['Confirmed'])
+st.dataframe(output_df)
+st.dataframe(prev_df)
+st.metric(label='Confirmed', value=int(output_df[output_df.Province_State == state]['Confirmed']), delta=int(diff), delta_color='inverse')

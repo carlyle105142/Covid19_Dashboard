@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 
 class CovidData:
-    def __init__(self, desired_day=datetime.today()-timedelta(days=1)):
+    def __init__(self, desired_day=datetime.today()-timedelta(days=2)):
         self.start_date = datetime(year=2020, month=4, day=12)
         self.input_date = desired_day
         if self.input_date < self.start_date:
@@ -34,7 +34,7 @@ class CovidData:
 
         return daily_df
 
-    def get_cumulative_data(self, lag=30):
+    def get_period_data(self, lag=30):
 
         def date_range(start_date, end_date):
             for n in range(int((end_date - start_date).days)):
