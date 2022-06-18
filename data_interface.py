@@ -18,7 +18,9 @@ class CovidData:
               '/csse_covid_19_daily_reports_us/'
         return url + desired_day.strftime('%m-%d-%Y') + '.csv'
 
-    def get_daily_data(self, desired_day):
+    def get_daily_data(self, desired_day=None):
+        if desired_day is None:
+            desired_day = self.input_date
         url = self.make_url(desired_day)
         daily_df0 = pd.read_csv(url)  # get the daily data .csv file from source url
 
