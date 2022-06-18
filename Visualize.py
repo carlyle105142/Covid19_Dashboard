@@ -19,11 +19,10 @@ prev_df = prev_data.get_daily_data()
 # monthly_df = output_data.get_period_data(lag=30)
 
 
-# fig1 = px.line(df2[df2.Province_State == 'California'], y='Confirmed')
-# st.plotly_chart(fig1)
+
 # state = "California"
 state = st.selectbox(
-     'Please choose a state:',
+     'Please select a state from below:',
      output_df.Province_State.unique())
 
 state_df = output_df[output_df.Province_State == state]
@@ -61,3 +60,9 @@ col3.metric(label='Case-Fatality Ratio \n(vs. US avg.)',
 col4.metric(label='Incident Rate \n(vs. US avg.)', value=int(state_df['Incident_Rate'][0]),
             delta=incident_rate_diff,
             delta_color='inverse')
+
+fig1 = px.line(state_monthly_df, y='Confirmed')
+st.plotly_chart(fig1)
+
+fig2 = px.line(state_monthly_df, y='Deaths')
+st.plotly_chart(fig1)
