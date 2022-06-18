@@ -19,5 +19,5 @@ df1_prev = prev_cov_data.get_daily_data()
 # st.plotly_chart(fig1)
 state = "California"
 diff = int(df1[df1.Province_State == state]['Confirmed']) - int(df1_prev[df1_prev.Province_State == state]['Confirmed'])
-print(diff)
+
 st.metric(label='Confirmed', value=df1[df1.Province_State == state]['Confirmed'], delta=int(diff), delta_color='inverse')
