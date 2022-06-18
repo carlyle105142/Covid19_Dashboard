@@ -30,7 +30,7 @@ death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
 
 all_states_avg_mort = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
-    round(100*(state_df['Mortality_Rate'][0] - all_states_avg_mort), 3)
+    round(100*(state_df['Mortality_Rate'][0] - all_states_avg_mort), 5)
 )+"%"
 incident_rate_diff = str(
     int(state_df['Incident_Rate'][0] - prev_state_df['Incident_Rate'][0])
