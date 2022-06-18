@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 cov_data = CovidData()
-df1 = cov_data.get_daily_data(datetime.today()-timedelta(days=1))
+df1 = cov_data.get_daily_data(datetime.today()-timedelta(days=2))
 
 prev_cov_data = CovidData(cov_data.input_date - timedelta(days=7))
 df1_prev = prev_cov_data.get_daily_data(cov_data.input_date - timedelta(days=7))
