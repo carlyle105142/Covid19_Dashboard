@@ -24,6 +24,10 @@ prev_df = prev_data.get_daily_data()
 state = "California"
 diff = int(output_df[output_df.Province_State == state]['Confirmed']) - int(
     prev_df[prev_df.Province_State == state]['Confirmed'])
-st.dataframe(output_df)
-st.dataframe(prev_df)
+death_diff = int(output_df[output_df.Province_State == state]['Deaths']) - int(
+    prev_df[prev_df.Province_State == state]['Deaths'])
+
+# st.dataframe(output_df)
+# st.dataframe(prev_df)
 st.metric(label='Confirmed', value=int(output_df[output_df.Province_State == state]['Confirmed']), delta=int(diff), delta_color='inverse')
+st.metric(label='Deaths', value=int(output_df[output_df.Province_State == state]['Deaths']), delta=int(death_diff), delta_color='inverse')
