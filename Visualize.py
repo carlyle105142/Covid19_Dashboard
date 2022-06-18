@@ -22,12 +22,16 @@ prev_df = prev_data.get_daily_data()
 # fig1 = px.line(df2[df2.Province_State == 'California'], y='Confirmed')
 # st.plotly_chart(fig1)
 state = "California"
-diff = int(output_df[output_df.Province_State == state]['Confirmed']) - int(
-    prev_df[prev_df.Province_State == state]['Confirmed'])
-death_diff = int(output_df[output_df.Province_State == state]['Deaths']) - int(
-    prev_df[prev_df.Province_State == state]['Deaths'])
+state_df = output_df[output_df.Province_State == state]
+prev_state_df = prev_df[prev_df.Province_State == state]
+diff = int(state_df['Confirmed']) - int(state_df['Confirmed'])
+death_diff = int(state_df['Deaths']) - int(prev_state_df['Deaths'])
+mort_rate_diff = round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0]), 2)
 
 # st.dataframe(output_df)
 # st.dataframe(prev_df)
-st.metric(label='Confirmed', value=int(output_df[output_df.Province_State == state]['Confirmed']), delta=int(diff), delta_color='inverse')
-st.metric(label='Deaths', value=int(output_df[output_df.Province_State == state]['Deaths']), delta=int(death_diff), delta_color='inverse')
+col1, col2, col3 = st.columns(3)
+col1.metric(label='Confirmed', value=int(state_df['Confirmed']), delta=int(diff), delta_color='inverse')
+col2.metric(label='Deaths', value=int(state_df['Deaths']), delta=int(death_diff), delta_color='inverse')
+col3.metric(label='Mortality Rate', value=str(round(10*output_df['Mortality_Rate'], 2))+"%", delta=mort_rate_diff,
+            delta_color='inverse')
