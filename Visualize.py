@@ -65,5 +65,5 @@ col4.metric(label='Incident Rate \n(vs. US avg.)', value=int(state_df['Incident_
 fig1 = px.line(state_monthly_df, y='Confirmed')
 st.plotly_chart(fig1)
 
-fig2 = px.line(state_monthly_df, y='Deaths')
-st.plotly_chart(fig1)
+fig2 = px.line(state_monthly_df, y='Deaths', color='red')
+st.plotly_chart(fig2)
