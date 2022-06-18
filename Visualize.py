@@ -4,11 +4,11 @@ from datetime import datetime, timedelta, date
 import plotly.express as px
 import matplotlib.pyplot as plt
 
-d_input = st.date_input("Please choose a date", date.today() - timedelta(days=2))
-dt_input = datetime(year=d_input.year, month=d_input.month, day=d_input.day)
+# d_input = st.date_input("Please choose a date", date.today() - timedelta(days=2))
+# dt_input = datetime(year=d_input.year, month=d_input.month, day=d_input.day)
 
 ## Output data according to user input
-output_data = CovidData(desired_day=dt_input)
+output_data = CovidData()
 output_df = output_data.get_daily_data()
 
 ## 7 days prior to input date
@@ -30,12 +30,23 @@ death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
 mort_rate_diff = str(
     round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Mortality_Rate'][0]), 3)
 )+"%"
+incident_rate_diff = str(
+    int(state_df['Incident_Rate'][0] - prev_state_df['Incident_Rate'][0])
+)
 
 # st.dataframe(output_df)
 # st.dataframe(prev_df)
-col1, col2, col3 = st.columns(3)
-col1.metric(label='Confirmed', value=int(state_df['Confirmed']), delta=diff, delta_color='inverse')
-col2.metric(label='Deaths', value=int(state_df['Deaths']), delta=death_diff, delta_color='inverse')
-col3.metric(label='Mortality Rate', value=str(round(10*output_df['Mortality_Rate'][0], 2))+"%",
+col1, col2 = st.columns(2)
+col3, col4 = st.columns(2)
+col1.metric(label='Confirmed', value=int(state_df['Confirmed'][0]),
+            delta=diff,
+            delta_color='inverse')
+col2.metric(label='Deaths', value=int(state_df['Deaths'][0]),
+            delta=death_diff,
+            delta_color='inverse')
+col3.metric(label='Case-Fatality Ratio', value=int(state_df['Mortality_Rate'][0]),
             delta=mort_rate_diff,
+            delta_color='inverse')
+col4.metric(label='Incident Rate', value=int(state_df['Incident_Rate'][0]),
+            delta=incident_rate_diff,
             delta_color='inverse')
