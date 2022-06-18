@@ -33,5 +33,6 @@ mort_rate_diff = round(100*(state_df['Mortality_Rate'][0] - prev_state_df['Morta
 col1, col2, col3 = st.columns(3)
 col1.metric(label='Confirmed', value=int(state_df['Confirmed']), delta=int(diff), delta_color='inverse')
 col2.metric(label='Deaths', value=int(state_df['Deaths']), delta=int(death_diff), delta_color='inverse')
-col3.metric(label='Mortality Rate', value=str(round(10*output_df['Mortality_Rate'][0], 2))+"%", delta=mort_rate_diff,
+col3.metric(label='Mortality Rate', value=str(round(10*output_df['Mortality_Rate'][0], 2))+"%",
+            delta=str(mort_rate_diff)+"%",
             delta_color='inverse')
