@@ -30,7 +30,7 @@ death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
 
 all_states_avg_mort = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
-    round(100*(state_df['Mortality_Rate'][0] - all_states_avg_mort), 5)
+    round(100*(state_df['Mortality_Rate'][0] - all_states_avg_mort), 2)
 )+"%"
 incident_rate_diff = str(
     int(state_df['Incident_Rate'][0] - prev_state_df['Incident_Rate'][0])
@@ -46,7 +46,7 @@ col1.metric(label='Confirmed', value=int(state_df['Confirmed'][0]),
 col2.metric(label='Deaths', value=int(state_df['Deaths'][0]),
             delta=death_diff,
             delta_color='inverse')
-col3.metric(label='Case-Fatality Ratio', value=int(state_df['Mortality_Rate'][0]),
+col3.metric(label='Case-Fatality Ratio', value=round(100*state_df['Mortality_Rate'][0], 2),
             delta=mort_rate_diff,
             delta_color='inverse')
 col4.metric(label='Incident Rate', value=int(state_df['Incident_Rate'][0]),
