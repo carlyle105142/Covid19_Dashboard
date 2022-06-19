@@ -17,11 +17,11 @@ prev_data = CovidData(output_data.input_date - timedelta(days=7))
 prev_df = prev_data.get_daily_data()
 
 
-# state = "California"
-state = st.selectbox(
-     'Please select a state from below:',
-     output_df.Province_State.unique())
 
+# state = st.selectbox(
+#      'Please select a state from below:',
+#      output_df.Province_State.unique())
+state = "California"
 with st.spinner('Loading data from source...'):
     state_df = output_df[output_df.Province_State == state]
     prev_state_df = prev_df[prev_df.Province_State == state]
@@ -32,19 +32,19 @@ with st.spinner('Loading data from source...'):
 #############
 
 # Confirmed/Deaths difference with 7 days ago
-diff = str(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])
-death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
+diff = str(state_df['Confirmed'].iloc[0] - prev_state_df['Confirmed'].iloc[0])
+death_diff = str(state_df['Deaths'].iloc[0] - prev_state_df['Deaths'].iloc[0])
 
 # Mortality Rate
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
-    round(100 * (state_df['Mortality_Rate'][0] - US_avg_mr_daily), 2)
+    round(100 * (state_df['Mortality_Rate'].iloc[0] - US_avg_mr_daily), 2)
 )+"%"
 
 # Incident Rate
 US_avg_ir_daily = output_df['Incident_Rate'].mean(axis=0)
 incident_rate_diff = str(
-    int(state_df['Incident_Rate'][0] - US_avg_ir_daily)
+    int(state_df['Incident_Rate'].iloc[0] - US_avg_ir_daily)
 )
 
 # Average Incident Rate
@@ -57,17 +57,17 @@ state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(flo
 # st.dataframe(prev_df)
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
-col1.metric(label='Confirmed', value=int(state_df['Confirmed'][0]),
+col1.metric(label='Confirmed', value=int(state_df['Confirmed'].iloc[0]),
             delta=diff,
             delta_color='inverse')
-col2.metric(label='Deaths', value=int(state_df['Deaths'][0]),
+col2.metric(label='Deaths', value=int(state_df['Deaths'].iloc[0]),
             delta=death_diff,
             delta_color='inverse')
 col3.metric(label='Case-Fatality Ratio (vs. US avg.)',
-            value=str(round(100*state_df['Mortality_Rate'][0], 2))+"%",
+            value=str(round(100*state_df['Mortality_Rate'].iloc[0], 2))+"%",
             delta=mort_rate_diff,
             delta_color='inverse')
-col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Rate'][0]),
+col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Rate'].iloc[0]),
             delta=incident_rate_diff,
             delta_color='inverse')
 
