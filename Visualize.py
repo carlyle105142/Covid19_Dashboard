@@ -25,12 +25,13 @@ state = st.selectbox(
      'Please select a state from below:',
      output_df.Province_State.unique())
 
-state_df = output_df[output_df.Province_State == state]
-prev_state_df = prev_df[prev_df.Province_State == state]
+with st.spinner('Loading data from source...'):
+    state_df = output_df[output_df.Province_State == state]
+    prev_state_df = prev_df[prev_df.Province_State == state]
 
-monthly_df = output_data.get_period_data(lag=30)
-state_monthly_df = monthly_df[monthly_df.Province_State == state]
-
+    monthly_df = output_data.get_period_data(lag=30)
+    state_monthly_df = monthly_df[monthly_df.Province_State == state]
+st.success('Data Found!')
 diff = str(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])
 death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
 
