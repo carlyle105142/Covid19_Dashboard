@@ -18,10 +18,10 @@ prev_df = prev_data.get_daily_data()
 
 
 
-# state = st.selectbox(
-#      'Please select a state from below:',
-#      output_df.Province_State.unique())
-state = "California"
+state = st.selectbox(
+     'Please select a state from below:',
+     output_df.Province_State.unique())
+# state = "California"
 with st.spinner('Loading data from source...'):
     state_df = output_df[output_df.Province_State == state]
     prev_state_df = prev_df[prev_df.Province_State == state]
