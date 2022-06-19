@@ -1,6 +1,7 @@
 from data_interface import CovidData
 import streamlit as st
 from datetime import datetime, timedelta, date
+import plotly.graph_objects as go
 import plotly.express as px
 import matplotlib.pyplot as plt
 
@@ -15,10 +16,6 @@ output_df = output_data.get_daily_data()
 prev_data = CovidData(output_data.input_date - timedelta(days=7))
 prev_df = prev_data.get_daily_data()
 
-## 1-month data
-# monthly_df = output_data.get_period_data(lag=30)
-
-
 
 # state = "California"
 state = st.selectbox(
@@ -31,19 +28,30 @@ with st.spinner('Loading data from source...'):
 
     monthly_df = output_data.get_period_data(lag=30)
     state_monthly_df = monthly_df[monthly_df.Province_State == state]
-st.success('Data Found!')
+
+#############
+
+# Confirmed/Deaths difference with 7 days ago
 diff = str(state_df['Confirmed'][0] - prev_state_df['Confirmed'][0])
 death_diff = str(state_df['Deaths'][0] - prev_state_df['Deaths'][0])
 
-US_avg_mort = output_df['Mortality_Rate'].mean(axis=0)
+# Mortality Rate
+US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
-    round(100*(state_df['Mortality_Rate'][0] - US_avg_mort), 2)
+    round(100 * (state_df['Mortality_Rate'][0] - US_avg_mr_daily), 2)
 )+"%"
 
-US_avg_incident = output_df['Incident_Rate'].mean(axis=0)
+# Incident Rate
+US_avg_ir_daily = output_df['Incident_Rate'].mean(axis=0)
 incident_rate_diff = str(
-    int(state_df['Incident_Rate'][0] - US_avg_incident)
+    int(state_df['Incident_Rate'][0] - US_avg_ir_daily)
 )
+
+# Average Incident Rate
+US_avg_ir_monthly = monthly_df.groupby('Date').mean()['Incident_Rate']
+state_monthly_df['US_Avg_Incident_Rate'] = list(US_avg_ir_monthly)
+state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(float)
+##############
 
 # st.dataframe(output_df)
 # st.dataframe(prev_df)
@@ -55,16 +63,23 @@ col1.metric(label='Confirmed', value=int(state_df['Confirmed'][0]),
 col2.metric(label='Deaths', value=int(state_df['Deaths'][0]),
             delta=death_diff,
             delta_color='inverse')
-col3.metric(label='Case-Fatality Ratio \n(vs. US avg.)',
+col3.metric(label='Case-Fatality Ratio (vs. US avg.)',
             value=str(round(100*state_df['Mortality_Rate'][0], 2))+"%",
             delta=mort_rate_diff,
             delta_color='inverse')
-col4.metric(label='Incident Rate \n(vs. US avg.)', value=int(state_df['Incident_Rate'][0]),
+col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Rate'][0]),
             delta=incident_rate_diff,
             delta_color='inverse')
 
-fig1 = px.line(state_monthly_df, y='Confirmed')
+
+fig1 = px.line(data_frame=state_monthly_df, x='Date', y='Confirmed',
+               title="Number of Confirmed Cases")
 st.plotly_chart(fig1)
 
-fig2 = px.line(state_monthly_df, y='Deaths')
+fig2 = px.line(data_frame=state_monthly_df, x='Date', y='Deaths',
+               title="Number of Deaths")
 st.plotly_chart(fig2)
+
+fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
+               title="State Incident Rate vs. US Average")
+st.plotly_chart(fig3)

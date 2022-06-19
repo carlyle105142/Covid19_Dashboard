@@ -26,7 +26,7 @@ class CovidData:
 
         daily_df = daily_df0[daily_df0['ISO3'] == 'USA'][self.col_name]
         daily_df['Date'] = desired_day.strftime('%m-%d-%Y')
-        daily_df.set_index('Date', inplace=True)
+        # daily_df.set_index('Date', inplace=True)
 
         daily_df.dropna(subset=['Lat', 'Long_'], inplace=True)
         daily_df[['Confirmed', 'Deaths']] = daily_df[['Confirmed', 'Deaths']].astype(int)
