@@ -72,14 +72,17 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
             delta_color='inverse')
 
 
+col5, col6 = st.columns(2)
+
 fig1 = px.line(data_frame=state_monthly_df, x='Date', y='Confirmed',
                title="Number of Confirmed Cases")
 st.plotly_chart(fig1)
 
 fig2 = px.line(data_frame=state_monthly_df, x='Date', y='Deaths',
                title="Number of Deaths")
-st.plotly_chart(fig2)
+
+col5.plotly_chart(fig2)
 
 fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                title="State Incident Rate vs. US Average")
-st.plotly_chart(fig3)
+col6.plotly_chart(fig3)
