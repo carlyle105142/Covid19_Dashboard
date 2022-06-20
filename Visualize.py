@@ -95,7 +95,7 @@ with st.container():
         row=1, col=2
     )
 
-    fig1.update_layout(height=600, width=1000, title_text="State Confirmed and Death Counts")
+    fig1.update_layout(height=600, width=900, title_text="State Confirmed and Death Counts")
     st.plotly_chart(fig1)
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
