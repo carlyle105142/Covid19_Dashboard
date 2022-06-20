@@ -95,12 +95,12 @@ with st.container():
         row=1, col=2
     )
 
-    fig1.update_layout(height=600, width=900, title_text="State Confirmed and Death Counts")
+    fig1.update_layout(height=400, width=700, title_text="State Confirmed and Death Counts")
     st.plotly_chart(fig1)
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
-    fig2.update_layout(height=600, width=1000,
+    fig2.update_layout(height=400, width=700,
                        margin=dict(
                            l=10,
                            r=50,
