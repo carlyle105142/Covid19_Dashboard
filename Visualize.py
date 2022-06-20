@@ -102,7 +102,7 @@ with st.container():
                    title="State Incident Rate vs. US Average")
     fig2.update_layout(height=400, width=700,
                        margin=dict(
-                           l=10,
+                           l=0,
                            r=50,
                            b=100,
                            t=100,
