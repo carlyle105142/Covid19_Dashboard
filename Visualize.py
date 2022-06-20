@@ -17,6 +17,8 @@ output_df = output_data.get_daily_data()
 prev_data = CovidData(output_data.input_date - timedelta(days=7))
 prev_df = prev_data.get_daily_data()
 
+st.title('COVID-19 Dashboard')
+
 states = output_df.Province_State.unique()
 state = st.selectbox(
     'Please select a state from below:',
