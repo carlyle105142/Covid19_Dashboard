@@ -95,8 +95,9 @@ with st.container():
     )
 
     fig1.update_layout(height=600, width=1000, title_text="Side By Side Subplots")
+    st.plotly_chart(fig1)
 
-
+with st.container():
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
     st.plotly_chart(fig2)
