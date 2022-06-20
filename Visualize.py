@@ -73,20 +73,37 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
             delta_color='inverse')
 
 with st.container():
-    fig1 = make_subplots(rows=1, cols=2,
-                         subplot_titles=('Confirmed', 'Deaths', 'State Incident Rate vs. US Average'))
+    fig1 = make_subplots(rows=4, cols=1,
+                         subplot_titles=('Confirmed', 'Confirmed Daily Changes', 'Deaths','Deaths Daily Changes'))
 
     fig1.add_trace(
-        go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Confirmed'], name='Confirmed'),
-        row=1, col=1,
-    )
+        go.Scatter(x=state_monthly_df['Date'],
+                   y=state_monthly_df['Confirmed'],
+                   line=dict(color="black")),
+        row=1, col=1)
+
     fig1.add_trace(
-        go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'], name='Deaths'),
-        row=1, col=2)
-    fig1.update_layout(height=400, width=700,
+        go.Scatter(x=state_monthly_df['Date'],
+                   y=state_monthly_df['Confirmed'].diff(1).fillna(0),
+                   line=dict(color="#FF737D")),
+        row=2, col=1)
+
+    fig1.add_trace(
+        go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'],
+                   line=dict(color="black")),
+        row=3, col=1)
+
+    fig1.add_trace(
+        go.Scatter(x=state_monthly_df['Date'],
+                   y=state_monthly_df['Deaths'].diff(1).fillna(0),
+                   line=dict(color="#FF737D")),
+        row=4, col=1)
+
+    fig1.update_layout(height=1200, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
-                       )
-    fig1.update_xaxes(tickangle=45)
+                       showlegend=False)
+    fig1.update_xaxes(tickangle=90)
+    fig1.show()
     st.plotly_chart(fig1)
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
