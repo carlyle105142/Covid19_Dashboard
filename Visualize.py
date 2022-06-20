@@ -53,8 +53,6 @@ state_monthly_df['US_Avg_Incident_Rate'] = list(US_avg_ir_monthly)
 state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(float)
 ##############
 
-# st.dataframe(output_df)
-# st.dataframe(prev_df)
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
 col1.metric(label='Confirmed', value=int(state_df['Confirmed'].iloc[0]),
@@ -70,9 +68,9 @@ col3.metric(label='Case-Fatality Ratio (vs. US avg.)',
 col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Rate'].iloc[0]),
             delta=incident_rate_diff,
             delta_color='inverse')
-
+st.header('Data Visualization')
 with st.container():
-    st.header('Header1')
+    st.subheader('Confirmed Cases')
     fig1 = make_subplots(rows=1, cols=1,
                          specs=[[{"secondary_y": True}]])
 
@@ -97,7 +95,7 @@ with st.container():
     st.plotly_chart(fig1)
 
 with st.container():
-    st.header('Header1')
+    st.subheader('Deaths')
     fig2 = make_subplots(rows=1, cols=1,
                          specs=[[{"secondary_y": True}]])
     fig2.add_trace(
@@ -122,9 +120,8 @@ with st.container():
     st.plotly_chart(fig2)
 
 with st.container():
-    st.header('Header1')
-    fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
-                   title="State Incident Rate vs. US Average")
+    st.header('State Incident Rate vs. US Average')
+    fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'])
     fig3.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=30, t=30, pad=4),
                        yaxis_title="Incident Rate:<br>cases per 100,000 persons",
