@@ -90,7 +90,8 @@ with st.container():
         secondary_y=False)
     fig1.update_layout(height=400, width=700,
                        margin=dict(l=70, r=10, b=30, t=30, pad=4),
-                       xaxis_tickformat = '%d %B (%a)<br>%Y')
+                       yaxis_title="Confirmed Cases Count and Daily Changes",
+                       legend=dict(xanchor='left', yanchor='top'))
     st.plotly_chart(fig1)
 
 with st.container():
@@ -112,7 +113,8 @@ with st.container():
 
     fig2.update_layout(height=400, width=700,
                        margin=dict(l=70, r=10, b=30, t=30, pad=4),
-                       xaxis_tickformat = '%d %B (%a)<br>%Y')
+                       yaxis_title="Death Count and Daily Changes",
+                       legend=dict(xanchor='left', yanchor='top'))
     st.plotly_chart(fig2)
 
 with st.container():
