@@ -99,7 +99,7 @@ with st.container():
                            l=0,
                            r=0,
                            b=0,
-                           t=0,
+                           t=50,
                            pad=4
                        )
                        )
@@ -110,9 +110,9 @@ with st.container():
     fig2.update_layout(height=400, width=700,
                        margin=dict(
                            l=0,
-                           r=50,
-                           b=100,
-                           t=100,
+                           r=0,
+                           b=0,
+                           t=50,
                            pad=4
                        ))
     st.plotly_chart(fig2)
