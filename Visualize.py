@@ -83,7 +83,7 @@ col5, col6 = st.columns(2)
 
 # col6.plotly_chart(fig2)
 with st.container():
-    fig1 = make_subplots(rows=2, cols=2,
+    fig1 = make_subplots(rows=1, cols=2,
                          subplot_titles=('Confirmed','Deaths','State Incident Rate vs. US Average'))
 
     fig1.add_trace(
@@ -94,12 +94,10 @@ with st.container():
         go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'], name='Deaths'),
         row=1, col=2
     )
-    fig1.add_trace(go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Incident_Rate', 'US_Avg_Incident_Rate']),
-                              row=2, col=1)
 
-    fig1.update_layout(height=800, width=1000, title_text="Side By Side Subplots")
+    fig1.update_layout(title_text="Side By Side Subplots")
     st.plotly_chart(fig1)
 
-    # fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
-    #                title="State Incident Rate vs. US Average")
-    # st.plotly_chart(fig2)
+    fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
+                   title="State Incident Rate vs. US Average")
+    st.plotly_chart(fig2)
