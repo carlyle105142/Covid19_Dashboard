@@ -80,18 +80,20 @@ with st.container():
                    y=state_monthly_df['Confirmed'],
                    line=dict(color="black", shape='spline'), name='Confirmed', legendgroup='1'),
         row=1, col=1,
-        secondary_y=True)
+        secondary_y=False)
 
     fig1.add_trace(
         go.Bar(x=state_monthly_df['Date'],
                y=state_monthly_df['Confirmed'].diff(1).fillna(0),
                marker=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
         row=1, col=1,
-        secondary_y=False)
+        secondary_y=True)
+    fig1.update_yaxes(title_text="Number of Confirmed Cases", secondary_y=False)
+    fig1.update_yaxes(title_text="Daily Changes", secondary_y=True)
+
     fig1.update_layout(height=400, width=700,
                        margin=dict(l=70, r=10, b=30, t=30, pad=4),
-                       yaxis_title="Confirmed Cases Count and Daily Changes",
-                       legend=dict(xanchor='left', yanchor='top'))
+                       yaxis_title="Confirmed Cases Count and Daily Changes")
     st.plotly_chart(fig1)
 
 with st.container():
@@ -102,19 +104,21 @@ with st.container():
                    y=state_monthly_df['Deaths'],
                    line=dict(color="black", shape='spline'), name='Deaths', legendgroup='2'),
         row=1, col=1,
-        secondary_y=True)
+        secondary_y=False)
 
     fig2.add_trace(
         go.Bar(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'].diff(1).fillna(0),
                    marker=dict(color="#9999FF"), name='Daily Changes', opacity=0.5, legendgroup='2'),
         row=1, col=1,
-        secondary_y=False)
+        secondary_y=True)
+
+    fig2.update_yaxes(title_text="Number of Deaths", secondary_y=False)
+    fig2.update_yaxes(title_text="Daily Changes", secondary_y=True)
 
     fig2.update_layout(height=400, width=700,
                        margin=dict(l=70, r=10, b=30, t=30, pad=4),
-                       yaxis_title="Death Count and Daily Changes",
-                       legend=dict(xanchor='left', yanchor='top'))
+                       yaxis_title="Death Count and Daily Changes")
     st.plotly_chart(fig2)
 
 with st.container():
