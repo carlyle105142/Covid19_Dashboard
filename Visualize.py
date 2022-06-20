@@ -88,7 +88,7 @@ with st.container():
                marker=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
         row=1, col=1,
         secondary_y=False)
-    fig1.update_layout(height=900, width=700,
+    fig1.update_layout(height=400, width=700,
                        margin=dict(l=70, r=10, b=0, t=50, pad=4))
     st.plotly_chart(fig1)
 
@@ -99,17 +99,17 @@ with st.container():
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'],
                    line=dict(color="black", shape='spline'), name='Deaths', legendgroup='2'),
-        row=2, col=1,
+        row=1, col=1,
         secondary_y=True)
 
     fig2.add_trace(
         go.Bar(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'].diff(1).fillna(0),
                    marker=dict(color="#FF737D"), name='Daily Changes', opacity=0.5, legendgroup='2'),
-        row=2, col=1,
+        row=1, col=1,
         secondary_y=False)
 
-    fig2.update_layout(height=900, width=700,
+    fig2.update_layout(height=400, width=700,
                        margin=dict(l=70, r=10, b=0, t=50, pad=4))
     st.plotly_chart(fig2)
 
