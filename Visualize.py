@@ -92,8 +92,7 @@ with st.container():
     fig1.update_yaxes(title_text="Daily Changes", secondary_y=True)
 
     fig1.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=30, t=30, pad=4),
-                       yaxis_title="Confirmed Cases Count and Daily Changes")
+                       margin=dict(l=70, r=10, b=30, t=30, pad=4))
     st.plotly_chart(fig1)
 
 with st.container():
@@ -117,8 +116,7 @@ with st.container():
     fig2.update_yaxes(title_text="Daily Changes", secondary_y=True)
 
     fig2.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=30, t=30, pad=4),
-                       yaxis_title="Death Count and Daily Changes")
+                       margin=dict(l=70, r=10, b=30, t=30, pad=4))
     st.plotly_chart(fig2)
 
 with st.container():
