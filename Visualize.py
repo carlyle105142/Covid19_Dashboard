@@ -91,6 +91,7 @@ with st.container():
                    title="State Incident Rate vs. US Average")
     fig2.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
-                       yaxis_title="Incident Rate:<br>cases per 100,000 persons")
+                       yaxis_title="Incident Rate:<br>cases per 100,000 persons",
+                       xaxis_title=" ")
     fig2.update_xaxes(tickangle=45)
     st.plotly_chart(fig2)
