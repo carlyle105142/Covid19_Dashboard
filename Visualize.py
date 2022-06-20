@@ -29,7 +29,6 @@ with st.spinner('Loading data from source...'):
     monthly_df = output_data.get_period_data(lag=60)
     state_monthly_df = monthly_df[monthly_df.Province_State == state]
 
-
 #############
 
 # Confirmed/Deaths difference with 7 days ago
@@ -73,15 +72,15 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
             delta_color='inverse')
 
 with st.container():
-    fig1 = make_subplots(rows=1, cols=1,
-                         specs=[[{"secondary_y": True}]])
+    fig1 = make_subplots(rows=2, cols=1,
+                         specs=[[{"secondary_y": True}], [{"secondary_y": True}]])
 
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Confirmed'],
                    line=dict(color="black"), name='Confirmed'),
         row=1, col=1,
-    secondary_y=True)
+        secondary_y=True)
 
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
@@ -90,26 +89,23 @@ with st.container():
         row=1, col=1,
         secondary_y=False)
 
-    fig2 = make_subplots(rows=1, cols=1,
-                         specs=[[{"secondary_y": True}]])
-
-    fig2.add_trace(
+    fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'],
                    line=dict(color="black"), name='Deaths'),
-        row=1, col=1,
-    secondary_y=True)
+        row=2, col=1,
+        secondary_y=True)
 
-    fig2.add_trace(
+    fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'].diff(1).fillna(0),
                    line=dict(color="#FF737D", shape='spline'), name='Daily Changes'),
-        row=1, col=1,
+        row=2, col=1,
         secondary_y=False)
 
-    fig2.update_layout(height=400, width=700,
+    fig1.update_layout(height=900, width=700,
                        margin=dict(l=70, r=10, b=0, t=50, pad=4))
-    st.plotly_chart(fig2)
+    st.plotly_chart(fig1)
 
     fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
