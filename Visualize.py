@@ -95,7 +95,7 @@ with st.container():
         row=1, col=2)
     fig1.update_layout(height=400, width=700,
                        margin=dict(l=0,r=0,b=0,t=50,pad=4),
-                       xaxis_tickformat='%B %Y'
+                       xaxis_tickformat='%B-%Y'
                        )
     fig1.update_xaxes(tickangle=45)
     st.plotly_chart(fig1)
@@ -105,6 +105,6 @@ with st.container():
                    title="State Incident Rate vs. US Average")
     fig2.update_layout(height=400, width=700,
                        margin=dict(l=0,r=0,b=0,t=50,pad=4),
-                       xaxis_tickformat='%B %Y')
+                       xaxis_tickformat='%B-%Y')
     fig2.update_xaxes(tickangle=45)
     st.plotly_chart(fig2)
