@@ -92,10 +92,17 @@ with st.container():
     )
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'], name='Deaths'),
-        row=1, col=2
-    )
+        row=1, col=2)
 
-    fig1.update_layout(height=400, width=700, title_text="State Confirmed and Death Counts")
+    fig1.update_layout(height=400, width=700, title_text="State Confirmed and Death Counts",
+                       margin=dict(
+                           l=0,
+                           r=0,
+                           b=0,
+                           t=0,
+                           pad=4
+                       )
+                       )
     st.plotly_chart(fig1)
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
