@@ -125,5 +125,12 @@ with st.container():
     fig3.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=30, t=30, pad=4),
                        yaxis_title="Incident Rate:<br>cases per 100,000 persons",
-                       xaxis_title=" ")
+                       xaxis_title=" ",
+                       legend_title=" ")
+    newnames = {'Incident_Rate': 'State Incident Rate', 'US_Avg_Incident_Rate': 'US Average Incident Rate'}
+    fig3.for_each_trace(lambda t: t.update(name=newnames[t.name],
+                                          legendgroup=newnames[t.name],
+                                          hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name])
+                                          )
+                       )
     st.plotly_chart(fig3)
