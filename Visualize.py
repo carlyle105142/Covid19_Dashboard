@@ -70,7 +70,7 @@ col3.metric(label='Case-Fatality Ratio (vs. US avg.)',
 col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Rate'].iloc[0]),
             delta=incident_rate_diff,
             delta_color='inverse')
-st.header('Data Visualization')
+st.header('   ')
 with st.container():
     st.subheader('Confirmed Cases')
     fig1 = make_subplots(rows=1, cols=1,
