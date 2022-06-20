@@ -14,7 +14,7 @@ output_data = CovidData()
 output_df = output_data.get_daily_data()
 
 ## 7 days prior to input date
-prev_data = CovidData(output_data.input_date - timedelta(days=1))
+prev_data = CovidData(output_data.input_date - timedelta(days=7))
 prev_df = prev_data.get_daily_data()
 
 
@@ -32,7 +32,7 @@ with st.spinner('Loading data from source...'):
 
 #############
 
-# Confirmed/Deaths difference with 1 day ago
+# Confirmed/Deaths difference with 7 days ago
 diff = str(state_df['Confirmed'].iloc[0] - prev_state_df['Confirmed'].iloc[0])
 death_diff = str(state_df['Deaths'].iloc[0] - prev_state_df['Deaths'].iloc[0])
 
