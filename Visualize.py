@@ -1,6 +1,7 @@
 from data_interface import CovidData
 import streamlit as st
 from datetime import datetime, timedelta, date
+from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
 import matplotlib.pyplot as plt
@@ -73,16 +74,29 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
 
 
 col5, col6 = st.columns(2)
+# fig1 = px.line(data_frame=state_monthly_df, x='Date', y='Confirmed',
+#                title="Number of Confirmed Cases")
+# col5.plotly_chart(fig1)
+#
+# fig2 = px.line(data_frame=state_monthly_df, x='Date', y='Deaths',
+#                title="Number of Deaths")
 
-fig1 = px.line(data_frame=state_monthly_df, x='Date', y='Confirmed',
-               title="Number of Confirmed Cases")
-st.plotly_chart(fig1)
+# col6.plotly_chart(fig2)
+with st.container():
+    fig1 = make_subplots(rows=1, cols=2)
 
-fig2 = px.line(data_frame=state_monthly_df, x='Date', y='Deaths',
-               title="Number of Deaths")
+    fig1.add_trace(
+        go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Confirmed'], name='Confirmed'),
+        row=1, col=1,
+    )
+    fig1.add_trace(
+        go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'], name='Deaths'),
+        row=1, col=2
+    )
 
-col5.plotly_chart(fig2)
+    fig1.update_layout(height=600, width=1000, title_text="Side By Side Subplots")
 
-fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
-               title="State Incident Rate vs. US Average")
-col6.plotly_chart(fig3)
+
+    fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
+                   title="State Incident Rate vs. US Average")
+    st.plotly_chart(fig2)
