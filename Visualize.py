@@ -103,7 +103,7 @@ with st.container():
 
     fig1.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
-                       paper_bgcolor='white')
+                       plot_bgcolor='white')
     st.plotly_chart(fig1)
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
@@ -111,5 +111,5 @@ with st.container():
     fig2.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
                        yaxis_title="Incident Rate:<br>cases per 100,000 persons",
-                       xaxis_title=" ", paper_bgcolor='white')
+                       xaxis_title=" ", plot_bgcolor='white')
     st.plotly_chart(fig2)
