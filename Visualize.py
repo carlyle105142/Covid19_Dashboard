@@ -85,7 +85,7 @@ with st.container():
     fig1.add_trace(
         go.Bar(x=state_monthly_df['Date'],
                    y=state_monthly_df['Confirmed'].diff(1).fillna(0),
-                   line=dict(color="#FF737D", shape='spline'), opacity=0.5, name='Daily Changes', legendgroup='1'),
+                   marker=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
         row=1, col=1,
         secondary_y=False)
 
@@ -97,9 +97,9 @@ with st.container():
         secondary_y=True)
 
     fig1.add_trace(
-        go.Bar(x=state_monthly_df['Date'],
+        go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'].diff(1).fillna(0),
-                   line=dict(color="#FF737D", shape='spline'), name='Daily Changes', opacity=0.5, legendgroup='2'),
+                   marker=dict(color="#FF737D"), name='Daily Changes', opacity=0.5, legendgroup='2'),
         row=2, col=1,
         secondary_y=False)
 
