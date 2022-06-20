@@ -72,6 +72,7 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
             delta_color='inverse')
 
 with st.container():
+    st.header('Header1')
     fig1 = make_subplots(rows=1, cols=1,
                          specs=[[{"secondary_y": True}]])
 
@@ -96,6 +97,7 @@ with st.container():
     st.plotly_chart(fig1)
 
 with st.container():
+    st.header('Header1')
     fig2 = make_subplots(rows=1, cols=1,
                          specs=[[{"secondary_y": True}]])
     fig2.add_trace(
@@ -120,6 +122,7 @@ with st.container():
     st.plotly_chart(fig2)
 
 with st.container():
+    st.header('Header1')
     fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
     fig3.update_layout(height=400, width=700,
