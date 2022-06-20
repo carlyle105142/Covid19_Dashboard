@@ -89,7 +89,7 @@ with st.container():
         row=1, col=1,
         secondary_y=False)
     fig1.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=1000, t=100, pad=4))
+                       margin=dict(l=70, r=10, b=30, t=30, pad=4))
     st.plotly_chart(fig1)
 
 with st.container():
@@ -110,14 +110,14 @@ with st.container():
         secondary_y=False)
 
     fig2.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=100, t=100, pad=4))
+                       margin=dict(l=70, r=10, b=30, t=30, pad=4))
     st.plotly_chart(fig2)
 
 with st.container():
     fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
     fig3.update_layout(height=400, width=700,
-                       margin=dict(l=0, r=0, b=100, t=100, pad=4),
+                       margin=dict(l=0, r=0, b=30, t=30, pad=4),
                        yaxis_title="Incident Rate:<br>cases per 100,000 persons",
                        xaxis_title=" ")
     st.plotly_chart(fig3)
