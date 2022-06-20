@@ -90,26 +90,31 @@ with st.container():
         row=1, col=1,
         secondary_y=False)
 
-    # fig1.add_trace(
-    #     go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'],
-    #                line=dict(color="black")),
-    #     row=3, col=1)
-    #
-    # fig1.add_trace(
-    #     go.Scatter(x=state_monthly_df['Date'],
-    #                y=state_monthly_df['Deaths'].diff(1).fillna(0),
-    #                line=dict(color="#FF737D")),
-    #     row=4, col=1)
+    fig2 = make_subplots(rows=1, cols=1,
+                         specs=[[{"secondary_y": True}]])
 
-    fig1.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=0, t=50, pad=4),
-                       plot_bgcolor='white')
-    st.plotly_chart(fig1)
+    fig2.add_trace(
+        go.Scatter(x=state_monthly_df['Date'],
+                   y=state_monthly_df['Deaths'],
+                   line=dict(color="black"), name='Deaths'),
+        row=1, col=1,
+    secondary_y=True)
 
-    fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
-                   title="State Incident Rate vs. US Average")
+    fig1.add_trace(
+        go.Scatter(x=state_monthly_df['Date'],
+                   y=state_monthly_df['Deaths'].diff(1).fillna(0),
+                   line=dict(color="#FF737D", shape='spline'), name='Daily Changes'),
+        row=1, col=1,
+        secondary_y=False)
+
     fig2.update_layout(height=400, width=700,
+                       margin=dict(l=70, r=10, b=0, t=50, pad=4))
+    st.plotly_chart(fig2)
+
+    fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
+                   title="State Incident Rate vs. US Average")
+    fig3.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
                        yaxis_title="Incident Rate:<br>cases per 100,000 persons",
-                       xaxis_title=" ", plot_bgcolor='white')
-    st.plotly_chart(fig2)
+                       xaxis_title=" ")
+    st.plotly_chart(fig3)
