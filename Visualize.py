@@ -78,28 +78,28 @@ with st.container():
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Confirmed'],
-                   line=dict(color="black"), name='Confirmed'),
+                   line=dict(color="black"), name='Confirmed', legendgroup='1'),
         row=1, col=1,
         secondary_y=True)
 
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Confirmed'].diff(1).fillna(0),
-                   line=dict(color="#FF737D", shape='spline'), opacity=0.7, name='Daily Changes'),
+                   line=dict(color="#FF737D", shape='spline'), opacity=0.7, name='Daily Changes', legendgroup='1'),
         row=1, col=1,
         secondary_y=False)
 
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'],
-                   line=dict(color="black"), name='Deaths'),
+                   line=dict(color="black"), name='Deaths', legendgroup='2'),
         row=2, col=1,
         secondary_y=True)
 
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'].diff(1).fillna(0),
-                   line=dict(color="#FF737D", shape='spline'), name='Daily Changes', opacity=0.7),
+                   line=dict(color="#FF737D", shape='spline'), name='Daily Changes', opacity=0.7, legendgroup='2'),
         row=2, col=1,
         secondary_y=False)
 
