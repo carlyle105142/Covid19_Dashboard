@@ -102,7 +102,7 @@ with st.container():
     #     row=4, col=1)
 
     fig1.update_layout(height=400, width=700,
-                       margin=dict(l=80, r=0, b=0, t=50, pad=4),
+                       margin=dict(l=70, r=10, b=0, t=50, pad=4),
                        plot_bgcolor='white')
     st.plotly_chart(fig1)
 
