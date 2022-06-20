@@ -56,8 +56,8 @@ state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(flo
 
 # st.dataframe(output_df)
 # st.dataframe(prev_df)
-col1, col2 = st.columns(2)
-col3, col4 = st.columns(2)
+col0, col1, col2, col22 = st.columns(4)
+col00, col3, col4, col44 = st.columns(4)
 col1.metric(label='Confirmed', value=int(state_df['Confirmed'].iloc[0]),
             delta=diff,
             delta_color='inverse')
