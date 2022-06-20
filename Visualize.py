@@ -100,5 +100,12 @@ with st.container():
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
-    fig2.update_layout(height=600, width=1000)
+    fig2.update_layout(height=600, width=1000,
+                       margin=dict(
+                           l=10,
+                           r=50,
+                           b=100,
+                           t=100,
+                           pad=4
+                       ))
     st.plotly_chart(fig2)
