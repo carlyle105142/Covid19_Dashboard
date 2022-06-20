@@ -17,11 +17,9 @@ output_df = output_data.get_daily_data()
 prev_data = CovidData(output_data.input_date - timedelta(days=7))
 prev_df = prev_data.get_daily_data()
 
-
-
 state = st.selectbox(
-     'Please select a state from below:',
-     output_df.Province_State.unique())
+    'Please select a state from below:',
+    output_df.Province_State.unique())
 # state = "California"
 with st.spinner('Loading data from source...'):
     state_df = output_df[output_df.Province_State == state]
@@ -40,7 +38,7 @@ death_diff = str(state_df['Deaths'].iloc[0] - prev_state_df['Deaths'].iloc[0])
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
     round(100 * (state_df['Mortality_Rate'].iloc[0] - US_avg_mr_daily), 2)
-)+"%"
+) + "%"
 
 # Incident Rate
 US_avg_ir_daily = output_df['Incident_Rate'].mean(axis=0)
@@ -65,26 +63,16 @@ col2.metric(label='Deaths', value=int(state_df['Deaths'].iloc[0]),
             delta=death_diff,
             delta_color='inverse')
 col3.metric(label='Case-Fatality Ratio (vs. US avg.)',
-            value=str(round(100*state_df['Mortality_Rate'].iloc[0], 2))+"%",
+            value=str(round(100 * state_df['Mortality_Rate'].iloc[0], 2)) + "%",
             delta=mort_rate_diff,
             delta_color='inverse')
 col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Rate'].iloc[0]),
             delta=incident_rate_diff,
             delta_color='inverse')
 
-
-col5, col6 = st.columns(2)
-# fig1 = px.line(data_frame=state_monthly_df, x='Date', y='Confirmed',
-#                title="Number of Confirmed Cases")
-# col5.plotly_chart(fig1)
-#
-# fig2 = px.line(data_frame=state_monthly_df, x='Date', y='Deaths',
-#                title="Number of Deaths")
-
-# col6.plotly_chart(fig2)
 with st.container():
     fig1 = make_subplots(rows=1, cols=2,
-                         subplot_titles=('Confirmed','Deaths','State Incident Rate vs. US Average'))
+                         subplot_titles=('Confirmed', 'Deaths', 'State Incident Rate vs. US Average'))
 
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Confirmed'], name='Confirmed'),
@@ -94,17 +82,17 @@ with st.container():
         go.Scatter(x=state_monthly_df['Date'], y=state_monthly_df['Deaths'], name='Deaths'),
         row=1, col=2)
     fig1.update_layout(height=400, width=700,
-                       margin=dict(l=0,r=0,b=0,t=50,pad=4),
+                       margin=dict(l=0, r=0, b=0, t=50, pad=4),
                        xaxis_tickformat='%B-%Y'
                        )
     fig1.update_xaxes(tickangle=45)
     st.plotly_chart(fig1)
 
-
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
-                   title="State Incident Rate vs. US Average")
+                   title="State Incident Rate vs. US Average",
+                   labels=dict(y="Incident Rate:<br>cases per 100,000 persons"))
     fig2.update_layout(height=400, width=700,
-                       margin=dict(l=0,r=0,b=0,t=50,pad=4),
-                       xaxis_tickformat='%B-%Y')
+                       margin=dict(l=0, r=0, b=0, t=50, pad=4),
+                       xaxis_tickformat='%B-%Y',)
     fig2.update_xaxes(tickangle=45)
     st.plotly_chart(fig2)
