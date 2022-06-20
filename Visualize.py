@@ -83,7 +83,7 @@ with st.container():
         secondary_y=True)
 
     fig1.add_trace(
-        go.Bar(x=state_monthly_df['Date'],
+        go.Scatter(x=state_monthly_df['Date'],
                    y=state_monthly_df['Confirmed'].diff(1).fillna(0),
                    marker=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
         row=1, col=1,
