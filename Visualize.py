@@ -83,16 +83,14 @@ with st.container():
         row=1, col=2)
     fig1.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
-                       xaxis_tickformat='%B-%Y'
                        )
     fig1.update_xaxes(tickangle=45)
     st.plotly_chart(fig1)
 
     fig2 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
-                   title="State Incident Rate vs. US Average",
-                   labels=dict(y="Incident Rate:<br>cases per 100,000 persons"))
+                   title="State Incident Rate vs. US Average")
     fig2.update_layout(height=400, width=700,
                        margin=dict(l=0, r=0, b=0, t=50, pad=4),
-                       xaxis_tickformat='%B-%Y',)
+                       xaxis_title="Incident Rate:<br>cases per 100,000 persons")
     fig2.update_xaxes(tickangle=45)
     st.plotly_chart(fig2)
