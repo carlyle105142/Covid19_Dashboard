@@ -89,7 +89,7 @@ with st.container():
         row=1, col=1,
         secondary_y=False)
     fig1.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=0, t=50, pad=4))
+                       margin=dict(l=70, r=10, b=1000, t=100, pad=4))
     st.plotly_chart(fig1)
 
 with st.container():
@@ -105,19 +105,19 @@ with st.container():
     fig2.add_trace(
         go.Bar(x=state_monthly_df['Date'],
                    y=state_monthly_df['Deaths'].diff(1).fillna(0),
-                   marker=dict(color="#FF737D"), name='Daily Changes', opacity=0.5, legendgroup='2'),
+                   marker=dict(color="#9999FF"), name='Daily Changes', opacity=0.5, legendgroup='2'),
         row=1, col=1,
         secondary_y=False)
 
     fig2.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=0, t=50, pad=4))
+                       margin=dict(l=70, r=10, b=100, t=100, pad=4))
     st.plotly_chart(fig2)
 
 with st.container():
     fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'],
                    title="State Incident Rate vs. US Average")
     fig3.update_layout(height=400, width=700,
-                       margin=dict(l=0, r=0, b=0, t=50, pad=4),
+                       margin=dict(l=0, r=0, b=100, t=100, pad=4),
                        yaxis_title="Incident Rate:<br>cases per 100,000 persons",
                        xaxis_title=" ")
     st.plotly_chart(fig3)
