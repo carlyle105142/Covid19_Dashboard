@@ -192,5 +192,5 @@ if option == "Incident Rate":
             fig3.add_trace(
                 go.Scatter(x=compared_state_monthly_df['Date'],
                            y=compared_state_monthly_df['Incident_Rate'],
-                           line=dict(color="black", shape='spline'), name=compared_state),
+                           line=dict(color="pink", shape='spline'), name=compared_state),
                 row=1, col=1)
