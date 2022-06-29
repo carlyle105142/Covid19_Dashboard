@@ -158,9 +158,11 @@ if option == "Deaths":
                            margin=dict(l=70, r=10, b=30, t=30, pad=4))
         st.plotly_chart(fig2)
 if option == "Incident Rate":
-    compared_state = st.selectbox(
-        'Which state to compare with?',
-        list(states).pop(state).insert(0, "US Average"))
+    temp = list(states)
+    temp.remove(state)
+    temp.insert(0, "US Average")
+    compared_state = st.selectbox('Which state to compare with?', temp)
+
     if compared_state == "US Average":
         with st.container():
             st.subheader('State Incident Rate vs. US Average')
