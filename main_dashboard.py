@@ -51,8 +51,7 @@ death_ma.fillna(death_ma.iloc[6], inplace=True)
 confirmed_delta_ma = state_monthly_df['Confirmed'].diff(1).rolling(7).mean()
 death_delta_ma = state_monthly_df['Deaths'].diff(1).rolling(7).mean()
 
-# confirmed_delta_ma.fillna(confirmed_delta_ma.iloc[7], inplace=True)
-# death_delta_ma.fillna(death_delta_ma.iloc[7], inplace=True)
+
 
 # Mortality Rate
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
@@ -107,68 +106,72 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
             delta=incident_rate_diff,
             delta_color='inverse')
 st.header('   ')
-with st.container():
-    st.subheader('Confirmed Cases')
-    fig1 = make_subplots(rows=1, cols=1,
-                         specs=[[{"secondary_y": True}]])
+option = st.selectbox(
+     'Which plot would you like to look at?',
+     ('Confirmed Cases', 'Deaths', 'Incident Rate'))
+if option == "Confirmed Cases":
+    with st.container():
+        st.subheader('Confirmed Cases')
+        fig1 = make_subplots(rows=1, cols=1,
+                             specs=[[{"secondary_y": True}]])
 
-    fig1.add_trace(
-        go.Scatter(x=state_monthly_df['Date'],
-                   y=state_monthly_df['Confirmed'],
-                   line=dict(color="black", shape='spline'), name='Confirmed', legendgroup='1'),
-        row=1, col=1,
-        secondary_y=False)
-    # state_monthly_df['Confirmed'].diff(1).fillna(0)
-    fig1.add_trace(
-        go.Scatter(x=state_monthly_df['Date'],
-                   y=confirmed_delta_ma,
-                   line=dict(color="#FF737D", shape='spline'), opacity=0.5, name='Rate of Change', legendgroup='1'),
-        row=1, col=1,
-        secondary_y=True)
-    fig1.update_yaxes(title_text="Number of Confirmed Cases", secondary_y=False)
-    fig1.update_yaxes(title_text="Daily Changes", secondary_y=True)
+        fig1.add_trace(
+            go.Scatter(x=state_monthly_df['Date'],
+                       y=state_monthly_df['Confirmed'],
+                       line=dict(color="black", shape='spline'), name='Confirmed', legendgroup='1'),
+            row=1, col=1,
+            secondary_y=False)
+        # state_monthly_df['Confirmed'].diff(1).fillna(0)
+        fig1.add_trace(
+            go.Scatter(x=state_monthly_df['Date'],
+                       y=confirmed_delta_ma,
+                       line=dict(color="#FF737D", shape='spline'), opacity=0.5, name='Rate of Change', legendgroup='1'),
+            row=1, col=1,
+            secondary_y=True)
+        fig1.update_yaxes(title_text="Number of Confirmed Cases", secondary_y=False)
+        fig1.update_yaxes(title_text="Daily Changes", secondary_y=True)
 
-    fig1.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=30, t=30, pad=4))
-    st.plotly_chart(fig1)
+        fig1.update_layout(height=400, width=700,
+                           margin=dict(l=70, r=10, b=30, t=30, pad=4))
+        st.plotly_chart(fig1)
+if option == "Deaths":
+    with st.container():
+        st.subheader('Deaths')
+        fig2 = make_subplots(rows=1, cols=1,
+                             specs=[[{"secondary_y": True}]])
+        fig2.add_trace(
+            go.Scatter(x=state_monthly_df['Date'],
+                       y=state_monthly_df['Deaths'],
+                       line=dict(color="black", shape='spline'), name='Deaths', legendgroup='2'),
+            row=1, col=1,
+            secondary_y=False)
+        # state_monthly_df['Deaths'].diff(1).fillna(0)
+        fig2.add_trace(
+            go.Scatter(x=state_monthly_df['Date'],
+                       y=death_delta_ma,
+                       line=dict(color="#9999FF", shape='spline'), name='Rate of Change', opacity=0.5, legendgroup='2'),
+            row=1, col=1,
+            secondary_y=True)
 
-with st.container():
-    st.subheader('Deaths')
-    fig2 = make_subplots(rows=1, cols=1,
-                         specs=[[{"secondary_y": True}]])
-    fig2.add_trace(
-        go.Scatter(x=state_monthly_df['Date'],
-                   y=state_monthly_df['Deaths'],
-                   line=dict(color="black", shape='spline'), name='Deaths', legendgroup='2'),
-        row=1, col=1,
-        secondary_y=False)
-    # state_monthly_df['Deaths'].diff(1).fillna(0)
-    fig2.add_trace(
-        go.Scatter(x=state_monthly_df['Date'],
-                   y=death_delta_ma,
-                   line=dict(color="#9999FF", shape='spline'), name='Rate of Change', opacity=0.5, legendgroup='2'),
-        row=1, col=1,
-        secondary_y=True)
+        fig2.update_yaxes(title_text="Number of Deaths", secondary_y=False)
+        fig2.update_yaxes(title_text="Daily Changes", secondary_y=True)
 
-    fig2.update_yaxes(title_text="Number of Deaths", secondary_y=False)
-    fig2.update_yaxes(title_text="Daily Changes", secondary_y=True)
-
-    fig2.update_layout(height=400, width=700,
-                       margin=dict(l=70, r=10, b=30, t=30, pad=4))
-    st.plotly_chart(fig2)
-
-with st.container():
-    st.subheader('State Incident Rate vs. US Average')
-    fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'])
-    fig3.update_layout(height=400, width=700,
-                       margin=dict(l=0, r=0, b=30, t=30, pad=4),
-                       yaxis_title="Incident Rate:<br>cases per 100,000 persons",
-                       xaxis_title=" ",
-                       legend_title=" ")
-    newnames = {'Incident_Rate': 'State Incident Rate', 'US_Avg_Incident_Rate': 'US Average Incident Rate'}
-    fig3.for_each_trace(lambda t: t.update(name=newnames[t.name],
-                                           legendgroup=newnames[t.name],
-                                           hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name])
-                                           )
-                        )
-    st.plotly_chart(fig3)
+        fig2.update_layout(height=400, width=700,
+                           margin=dict(l=70, r=10, b=30, t=30, pad=4))
+        st.plotly_chart(fig2)
+if option == "Incident Rate":
+    with st.container():
+        st.subheader('State Incident Rate vs. US Average')
+        fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'])
+        fig3.update_layout(height=400, width=700,
+                           margin=dict(l=0, r=0, b=30, t=30, pad=4),
+                           yaxis_title="Incident Rate:<br>cases per 100,000 persons",
+                           xaxis_title=" ",
+                           legend_title=" ")
+        newnames = {'Incident_Rate': 'State Incident Rate', 'US_Avg_Incident_Rate': 'US Average Incident Rate'}
+        fig3.for_each_trace(lambda t: t.update(name=newnames[t.name],
+                                               legendgroup=newnames[t.name],
+                                               hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name])
+                                               )
+                            )
+        st.plotly_chart(fig3)
