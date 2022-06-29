@@ -170,7 +170,7 @@ with st.container():
         secondary_y=False)
 # state_monthly_df['Deaths'].diff(1).fillna(0)
     fig2.add_trace(
-        go.Bar(x=state_monthly_df['Date'],
+        go.Scatter(x=state_monthly_df['Date'],
                y=death_delta_ma,
                line=dict(color="#9999FF"), name='Daily Changes', opacity=0.5, legendgroup='2'),
         row=1, col=1,
