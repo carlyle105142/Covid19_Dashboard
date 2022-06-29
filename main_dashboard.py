@@ -31,11 +31,40 @@ with st.spinner('Loading data from source...'):
     monthly_df = output_data.get_period_data(lag=60)
     state_monthly_df = monthly_df[monthly_df.Province_State == state]
 
-#############
+
+
+##################
+#Key Metrices per state#
+##################
+
+
 
 # Confirmed/Deaths difference with 7 days ago
-diff = str(state_df['Confirmed'].iloc[0] - prev_state_df['Confirmed'].iloc[0])
+confirmed_diff = str(state_df['Confirmed'].iloc[0] - prev_state_df['Confirmed'].iloc[0])
 death_diff = str(state_df['Deaths'].iloc[0] - prev_state_df['Deaths'].iloc[0])
+
+
+
+
+# Confirmed/Deaths 7-Day MA
+confirmed_ma = state_monthly_df['Confirmed'].rolling(7).mean()
+death_ma = state_monthly_df['Deaths'].rolling(7).mean()
+
+confirmed_ma.fillna(confirmed_ma.iloc[6], inplace=True)
+death_ma.fillna(death_ma.iloc[6], inplace=True)
+
+
+
+
+# Confirmed/Deaths 7-Day delta MA
+confirmed_delta_ma = state_monthly_df['Confirmed'].diff(1).rolling(7).mean()
+death_delta_ma = state_monthly_df['Deaths'].diff(1).rolling(7).mean()
+
+confirmed_delta_ma.fillna(confirmed_delta_ma.iloc[7], inplace=True)
+death_delta_ma.fillna(death_delta_ma.iloc[7], inplace=True)
+
+
+
 
 # Mortality Rate
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
@@ -43,27 +72,60 @@ mort_rate_diff = str(
     round(100 * (state_df['Mortality_Rate'].iloc[0] - US_avg_mr_daily), 2)
 ) + "%"
 
+
+
+
+
 # Incident Rate
 US_avg_ir_daily = output_df['Incident_Rate'].mean(axis=0)
 incident_rate_diff = str(
     int(state_df['Incident_Rate'].iloc[0] - US_avg_ir_daily)
 )
 
+
+
+
 # Average Incident Rate
 US_avg_ir_monthly = monthly_df.groupby('Date').mean()['Incident_Rate']
 state_monthly_df['US_Avg_Incident_Rate'] = list(US_avg_ir_monthly)
 state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(float)
-##############
+
+
+
+##################
+##All State Data##
+##################
+
+all_states_df = output_df.drop(columns=['Lat', 'Long_'])
+
+
+
+# Goals:
+# Identify 7-day moving average curve (Confirmed and Deaths)
+# Find out if recent increases are worth alert
+# Write out the key questions of interest
+# Give a pie chart of total number of confirmed cases
+# Give a ranking of incident rate among all states (daily)
+
+
+
+
+
+#################
+##Visualization##
+#################
+date_str = output_data.date_str
+st.subheader('Latest Update ({0})'.format(date_str))
 
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
-col1.metric(label='Confirmed', value=int(state_df['Confirmed'].iloc[0]),
-            delta=diff,
+col1.metric(label='Confirmed (vs. Last Week)', value=int(state_df['Confirmed'].iloc[0]),
+            delta=confirmed_diff,
             delta_color='inverse')
-col2.metric(label='Deaths', value=int(state_df['Deaths'].iloc[0]),
+col2.metric(label='Deaths (vs. Last Week)', value=int(state_df['Deaths'].iloc[0]),
             delta=death_diff,
             delta_color='inverse')
-col3.metric(label='Case-Fatality Ratio (vs. US avg.)',
+col3.metric(label='Case-Fatality Ratio (vs. US Avg.)',
             value=str(round(100 * state_df['Mortality_Rate'].iloc[0], 2)) + "%",
             delta=mort_rate_diff,
             delta_color='inverse')
@@ -82,11 +144,11 @@ with st.container():
                    line=dict(color="black", shape='spline'), name='Confirmed', legendgroup='1'),
         row=1, col=1,
         secondary_y=False)
-
+# state_monthly_df['Confirmed'].diff(1).fillna(0)
     fig1.add_trace(
-        go.Bar(x=state_monthly_df['Date'],
-               y=state_monthly_df['Confirmed'].diff(1).fillna(0),
-               marker=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
+        go.Scatter(x=state_monthly_df['Date'],
+               y=confirmed_delta_ma,
+               line=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
         row=1, col=1,
         secondary_y=True)
     fig1.update_yaxes(title_text="Number of Confirmed Cases", secondary_y=False)
@@ -106,11 +168,11 @@ with st.container():
                    line=dict(color="black", shape='spline'), name='Deaths', legendgroup='2'),
         row=1, col=1,
         secondary_y=False)
-
+# state_monthly_df['Deaths'].diff(1).fillna(0)
     fig2.add_trace(
         go.Bar(x=state_monthly_df['Date'],
-                   y=state_monthly_df['Deaths'].diff(1).fillna(0),
-                   marker=dict(color="#9999FF"), name='Daily Changes', opacity=0.5, legendgroup='2'),
+               y=death_delta_ma,
+               line=dict(color="#9999FF"), name='Daily Changes', opacity=0.5, legendgroup='2'),
         row=1, col=1,
         secondary_y=True)
 
@@ -136,3 +198,7 @@ with st.container():
                                           )
                        )
     st.plotly_chart(fig3)
+
+
+
+
