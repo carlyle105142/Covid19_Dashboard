@@ -196,3 +196,4 @@ if option == "Incident Rate":
                            y=compared_state_monthly_df['Incident_Rate'],
                            line=dict(color="pink", shape='spline'), name=compared_state),
                 row=1, col=1)
+            st.plotly_chart(fig3)
