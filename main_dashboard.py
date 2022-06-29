@@ -51,8 +51,6 @@ death_ma.fillna(death_ma.iloc[6], inplace=True)
 confirmed_delta_ma = state_monthly_df['Confirmed'].diff(1).rolling(7).mean()
 death_delta_ma = state_monthly_df['Deaths'].diff(1).rolling(7).mean()
 
-
-
 # Mortality Rate
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
@@ -107,8 +105,8 @@ col4.metric(label='Incident Rate (vs. US avg.)', value=int(state_df['Incident_Ra
             delta_color='inverse')
 st.header('   ')
 option = st.selectbox(
-     'Which plot would you like to look at?',
-     ('Confirmed Cases', 'Deaths', 'Incident Rate'))
+    'Which plot would you like to look at?',
+    ('Confirmed Cases', 'Deaths', 'Incident Rate'))
 if option == "Confirmed Cases":
     with st.container():
         st.subheader('Confirmed Cases')
@@ -160,18 +158,39 @@ if option == "Deaths":
                            margin=dict(l=70, r=10, b=30, t=30, pad=4))
         st.plotly_chart(fig2)
 if option == "Incident Rate":
-    with st.container():
-        st.subheader('State Incident Rate vs. US Average')
-        fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'])
-        fig3.update_layout(height=400, width=700,
-                           margin=dict(l=0, r=0, b=30, t=30, pad=4),
-                           yaxis_title="Incident Rate:<br>cases per 100,000 persons",
-                           xaxis_title=" ",
-                           legend_title=" ")
-        newnames = {'Incident_Rate': 'State Incident Rate', 'US_Avg_Incident_Rate': 'US Average Incident Rate'}
-        fig3.for_each_trace(lambda t: t.update(name=newnames[t.name],
-                                               legendgroup=newnames[t.name],
-                                               hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name])
-                                               )
-                            )
-        st.plotly_chart(fig3)
+    compared_state = st.selectbox(
+        'Which state to compare with?',
+        states.pop(state).insert(0, "US Average"))
+    if compared_state == "US Average":
+        with st.container():
+            st.subheader('State Incident Rate vs. US Average')
+            fig3 = px.line(data_frame=state_monthly_df, x='Date', y=['Incident_Rate', 'US_Avg_Incident_Rate'])
+            fig3.update_layout(height=400, width=700,
+                               margin=dict(l=0, r=0, b=30, t=30, pad=4),
+                               yaxis_title="Incident Rate:<br>cases per 100,000 persons",
+                               xaxis_title=" ",
+                               legend_title=" ")
+            new_names = {'Incident_Rate': 'State Incident Rate', 'US_Avg_Incident_Rate': 'US Average Incident Rate'}
+            fig3.for_each_trace(lambda t: t.update(name=new_names[t.name],
+                                                   legendgroup=new_names[t.name],
+                                                   hovertemplate=t.hovertemplate.replace(t.name, new_names[t.name])
+                                                   )
+                                )
+            st.plotly_chart(fig3)
+    else:
+        with st.container():
+            st.subheader('Incident Rate: {0} vs. {1}'.format(state, compared_state))
+
+            compared_state_monthly_df = monthly_df[monthly_df.Province_State == compared_state]
+
+            fig3 = make_subplots(rows=1, cols=1)
+            fig3.add_trace(
+                go.Scatter(x=state_monthly_df['Date'],
+                           y=state_monthly_df['Incident_Rate'],
+                           line=dict(color="black", shape='spline'), name=state),
+                row=1, col=1)
+            fig3.add_trace(
+                go.Scatter(x=compared_state_monthly_df['Date'],
+                           y=compared_state_monthly_df['Incident_Rate'],
+                           line=dict(color="black", shape='spline'), name=compared_state),
+                row=1, col=1)
