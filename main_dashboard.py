@@ -194,6 +194,11 @@ if option == "Incident Rate":
             fig3.add_trace(
                 go.Scatter(x=compared_state_monthly_df['Date'],
                            y=compared_state_monthly_df['Incident_Rate'],
-                           line=dict(color="pink", shape='spline'), name=compared_state),
+                           line=dict(color="red", shape='spline'), name=compared_state),
                 row=1, col=1)
+            fig3.update_layout(height=400, width=700,
+                               margin=dict(l=0, r=0, b=30, t=30, pad=4),
+                               yaxis_title="Incident Rate:<br>cases per 100,000 persons",
+                               xaxis_title=" ",
+                               legend_title=" ")
             st.plotly_chart(fig3)
