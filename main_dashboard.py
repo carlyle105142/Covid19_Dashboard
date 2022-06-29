@@ -44,15 +44,15 @@ death_diff = str(state_df['Deaths'].iloc[0] - prev_state_df['Deaths'].iloc[0])
 confirmed_ma = state_monthly_df['Confirmed'].rolling(7).mean()
 death_ma = state_monthly_df['Deaths'].rolling(7).mean()
 
-# confirmed_ma.fillna(confirmed_ma.iloc[6], inplace=True)
-# death_ma.fillna(death_ma.iloc[6], inplace=True)
+confirmed_ma.fillna(confirmed_ma.iloc[6], inplace=True)
+death_ma.fillna(death_ma.iloc[6], inplace=True)
 
 # Confirmed/Deaths 7-Day delta MA
 confirmed_delta_ma = state_monthly_df['Confirmed'].diff(1).rolling(7).mean()
 death_delta_ma = state_monthly_df['Deaths'].diff(1).rolling(7).mean()
 
-confirmed_delta_ma.fillna(confirmed_delta_ma.iloc[7], inplace=True)
-death_delta_ma.fillna(death_delta_ma.iloc[7], inplace=True)
+# confirmed_delta_ma.fillna(confirmed_delta_ma.iloc[7], inplace=True)
+# death_delta_ma.fillna(death_delta_ma.iloc[7], inplace=True)
 
 # Mortality Rate
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
