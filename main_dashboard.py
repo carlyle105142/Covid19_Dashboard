@@ -160,7 +160,7 @@ if option == "Deaths":
 if option == "Incident Rate":
     compared_state = st.selectbox(
         'Which state to compare with?',
-        states.pop(state).insert(0, "US Average"))
+        states.remove(state).insert(0, "US Average"))
     if compared_state == "US Average":
         with st.container():
             st.subheader('State Incident Rate vs. US Average')
