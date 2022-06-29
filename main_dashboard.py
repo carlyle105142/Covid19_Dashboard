@@ -31,20 +31,14 @@ with st.spinner('Loading data from source...'):
     monthly_df = output_data.get_period_data(lag=60)
     state_monthly_df = monthly_df[monthly_df.Province_State == state]
 
-
-
 ##################
-#Key Metrices per state#
+# Key Metrices per state#
 ##################
-
 
 
 # Confirmed/Deaths difference with 7 days ago
 confirmed_diff = str(state_df['Confirmed'].iloc[0] - prev_state_df['Confirmed'].iloc[0])
 death_diff = str(state_df['Deaths'].iloc[0] - prev_state_df['Deaths'].iloc[0])
-
-
-
 
 # Confirmed/Deaths 7-Day MA
 confirmed_ma = state_monthly_df['Confirmed'].rolling(7).mean()
@@ -53,9 +47,6 @@ death_ma = state_monthly_df['Deaths'].rolling(7).mean()
 confirmed_ma.fillna(confirmed_ma.iloc[6], inplace=True)
 death_ma.fillna(death_ma.iloc[6], inplace=True)
 
-
-
-
 # Confirmed/Deaths 7-Day delta MA
 confirmed_delta_ma = state_monthly_df['Confirmed'].diff(1).rolling(7).mean()
 death_delta_ma = state_monthly_df['Deaths'].diff(1).rolling(7).mean()
@@ -63,18 +54,11 @@ death_delta_ma = state_monthly_df['Deaths'].diff(1).rolling(7).mean()
 confirmed_delta_ma.fillna(confirmed_delta_ma.iloc[7], inplace=True)
 death_delta_ma.fillna(death_delta_ma.iloc[7], inplace=True)
 
-
-
-
 # Mortality Rate
 US_avg_mr_daily = output_df['Mortality_Rate'].mean(axis=0)
 mort_rate_diff = str(
     round(100 * (state_df['Mortality_Rate'].iloc[0] - US_avg_mr_daily), 2)
 ) + "%"
-
-
-
-
 
 # Incident Rate
 US_avg_ir_daily = output_df['Incident_Rate'].mean(axis=0)
@@ -82,15 +66,10 @@ incident_rate_diff = str(
     int(state_df['Incident_Rate'].iloc[0] - US_avg_ir_daily)
 )
 
-
-
-
 # Average Incident Rate
 US_avg_ir_monthly = monthly_df.groupby('Date').mean()['Incident_Rate']
 state_monthly_df['US_Avg_Incident_Rate'] = list(US_avg_ir_monthly)
 state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(float)
-
-
 
 ##################
 ##All State Data##
@@ -98,17 +77,12 @@ state_monthly_df['Incident_Rate'] = state_monthly_df['Incident_Rate'].astype(flo
 
 all_states_df = output_df.drop(columns=['Lat', 'Long_'])
 
-
-
 # Goals:
 # Identify 7-day moving average curve (Confirmed and Deaths)
 # Find out if recent increases are worth alert
 # Write out the key questions of interest
 # Give a pie chart of total number of confirmed cases
 # Give a ranking of incident rate among all states (daily)
-
-
-
 
 
 #################
@@ -144,11 +118,11 @@ with st.container():
                    line=dict(color="black", shape='spline'), name='Confirmed', legendgroup='1'),
         row=1, col=1,
         secondary_y=False)
-# state_monthly_df['Confirmed'].diff(1).fillna(0)
+    # state_monthly_df['Confirmed'].diff(1).fillna(0)
     fig1.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
-               y=confirmed_delta_ma,
-               line=dict(color="#FF737D"), opacity=0.5, name='Daily Changes', legendgroup='1'),
+                   y=confirmed_delta_ma,
+                   line=dict(color="#FF737D", shape='spline'), opacity=0.5, name='Rate of Change', legendgroup='1'),
         row=1, col=1,
         secondary_y=True)
     fig1.update_yaxes(title_text="Number of Confirmed Cases", secondary_y=False)
@@ -168,11 +142,11 @@ with st.container():
                    line=dict(color="black", shape='spline'), name='Deaths', legendgroup='2'),
         row=1, col=1,
         secondary_y=False)
-# state_monthly_df['Deaths'].diff(1).fillna(0)
+    # state_monthly_df['Deaths'].diff(1).fillna(0)
     fig2.add_trace(
         go.Scatter(x=state_monthly_df['Date'],
-               y=death_delta_ma,
-               line=dict(color="#9999FF"), name='Daily Changes', opacity=0.5, legendgroup='2'),
+                   y=death_delta_ma,
+                   line=dict(color="#9999FF", shape='spline'), name='Rate of Change', opacity=0.5, legendgroup='2'),
         row=1, col=1,
         secondary_y=True)
 
@@ -193,12 +167,8 @@ with st.container():
                        legend_title=" ")
     newnames = {'Incident_Rate': 'State Incident Rate', 'US_Avg_Incident_Rate': 'US Average Incident Rate'}
     fig3.for_each_trace(lambda t: t.update(name=newnames[t.name],
-                                          legendgroup=newnames[t.name],
-                                          hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name])
-                                          )
-                       )
+                                           legendgroup=newnames[t.name],
+                                           hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name])
+                                           )
+                        )
     st.plotly_chart(fig3)
-
-
-
-
